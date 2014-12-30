@@ -12,6 +12,9 @@ ext_modules = [Extension("ifa",
                          extra_compile_args=["-Ofast",
                                              "-std=c++11",
                                              "-Wall",
+                                             "-fomit-frame-pointer",
+                                             "-flto",
+                                             "-march=native",
                                              "-fopenmp"])]
 
 

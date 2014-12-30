@@ -10,8 +10,6 @@ cimport numpy as np
 import cython
 import ctypes
 
-cdef dict Dict
-
 ctypedef map[string, double] Distribution
 
 cdef extern from "ifa.cpp":
@@ -55,9 +53,6 @@ def compute_entropy(vector[Distribution] distributions):
 
 
 def compute_data(vector[Distribution] distributions, vector[double] weights):
-    # cdef np.ndarray[double, ndim=1, mode='c'] entropies
-    # entropies = compute_entropy(distributions)
-
     cdef int n = distributions.size()
     cdef int ret_size = (n - 1) * n / 2
 
@@ -70,9 +65,6 @@ def compute_data(vector[Distribution] distributions, vector[double] weights):
     qIdxs = np.empty((ret_size,), dtype = ctypes.c_int)
     index_ds = np.empty((ret_size,), dtype = ctypes.c_double)
     directions = np.empty((ret_size,), dtype = ctypes.c_int)
-
-    # cdef vector[s_data_entry] data
-    # data.resize((n - 1) * n / 2)
 
     cdef int i, j, k
     print "Compute Data"

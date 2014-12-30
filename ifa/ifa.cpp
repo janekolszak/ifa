@@ -115,15 +115,3 @@ double c_index_d(const Distribution &p,
     double d = c_jsd({p, q}, {wp, wq});
     return d / (-wp * log2(wp) - wq * log2(wq));
 }
-
-// std::map<DistributionID, std::vector<DistributionID>>
-//         c_compute_connections(const std::map<DistributionID, Distribution> distributions)
-// {
-//     std::map<DistributionID, std::vector<DistributionID>> connections;
-
-//     for (const auto it = distributions.begin();
-//             it != distributions.end();
-//             ++it ) {
-        
-//     }
-// }

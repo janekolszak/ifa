@@ -1,5 +1,5 @@
-#ifndef TESTLIB_H
-#define TESTLIB_H
+#ifndef IFA_H
+#define IFA_H
 
 #include <vector>
 #include <map>
