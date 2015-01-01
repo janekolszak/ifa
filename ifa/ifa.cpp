@@ -1,5 +1,11 @@
 #include "ifa.hpp"
 #include <cmath>
+#include <iostream>
+
+void c_logd(int x)
+{
+    std::cout << std::to_string(x) << std::endl;
+}
 
 inline
 double log2(double x)

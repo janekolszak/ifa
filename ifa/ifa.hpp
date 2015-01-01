@@ -9,6 +9,8 @@
 typedef std::map<std::string, double> Distribution;
 typedef std::string DistributionID;
 
+void c_logd(int x);
+
 double c_entropy(const std::vector<double> &probabilities);
 
 double c_entropy_of_distribution(const Distribution &distribution);

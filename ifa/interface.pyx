@@ -19,28 +19,29 @@ cdef extern from "ifa.cpp":
     Distribution c_common(Distribution p, Distribution q) nogil
     int c_direction(Distribution p, Distribution q) nogil
     int c_index_d(Distribution p, Distribution q, double p_weight, double q_weight) nogil
+    void c_logd(int x) nogil
 
 
 cpdef entropy(vector[double] probabilities):
     return c_entropy(probabilities)
 
-
+@cython.boundscheck(False)
 cpdef jsd(vector[Distribution] distributions, vector[double] weights ):
     return c_jsd(distributions, weights)
 
-
+@cython.boundscheck(False)
 cpdef common(Distribution p, Distribution q):
     return c_common(p,q)
 
-
+@cython.boundscheck(False)
 cpdef direction(Distribution p, Distribution q):
     return c_direction(p, q)
 
-
+@cython.boundscheck(False)
 cpdef index_d(Distribution p, Distribution q, double p_weight, double q_weight):
     return c_index_d(p, q, p_weight, q_weight)
 
-
+@cython.boundscheck(False)
 def compute_entropy(vector[Distribution] distributions):
     cdef np.ndarray[double, ndim=1, mode='c'] entropies
     entropies = np.empty((distributions.size(),), dtype = ctypes.c_double)
@@ -51,7 +52,7 @@ def compute_entropy(vector[Distribution] distributions):
 
     return entropies
 
-
+@cython.boundscheck(False)
 def compute_data(vector[Distribution] distributions, vector[double] weights):
     cdef int n = distributions.size()
     cdef int ret_size = (n - 1) * n / 2
@@ -68,9 +69,9 @@ def compute_data(vector[Distribution] distributions, vector[double] weights):
 
     cdef int i, j, k
     print "Compute Data"
-    for i in range(1, n):
-        print i
-        for j in prange(i, n, nogil=True):
+    for i in prange(1, n, nogil=True, schedule="dynamic", chunksize=1):
+        c_logd(i);
+        for j in range(i, n):
             k = n * (i - 1) + j - i * (i - 1) / 2 - i
             pIdxs[k] = i
             qIdxs[k] = j
