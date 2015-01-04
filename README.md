@@ -14,10 +14,19 @@ Usage
 =====
 Computing Jensen–Shannon divergence:
 ````python
-import ifa 
+from ifa.distribution import Distribution
+from ifa.divergence import jsd
 
-p = {"A": 0.4, "B": 0.6}
-q = {"A": 0.3, "B": 0.3, "C": 0.3}
-weights = [0.2, 0.8] #sum to 1.0
-print ifa.jsd([p, q], w)
+from numpy.testing import assert_allclose
+
+p = Distribution()
+p.insert("A", 0.5)
+p.insert("B", 0.5)
+
+q = Distribution()
+q.insert("A", 0.5)
+q.insert("C", 0.5)
+
+assert_allclose(jsd(p, 0.5, q, 0.5), [0.5])
+        
 ````
