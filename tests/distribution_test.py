@@ -29,6 +29,54 @@ import numpy as np
 
 class TestDistribution(unittest.TestCase):
 
+    def test_iteration(self):
+        d = Distribution(["A", "B"], [0.3, 0.7])
+
+        it = iter(d)
+        e, p = it.next()
+        self.assertEqual(e, "A")
+        self.assertEqual(p, 0.3)
+
+        e, p = it.next()
+        self.assertEqual(e, "B")
+        self.assertEqual(p, 0.7)
+
+        for e, p in d:
+            pass
+
+        it = iter(d)
+        e, p = it.next()
+        self.assertEqual(e, "A")
+        self.assertEqual(p, 0.3)
+
+        e, p = it.next()
+        self.assertEqual(e, "B")
+        self.assertEqual(p, 0.7)
+
+    def test_getsetdel(self):
+        d = Distribution()
+        with self.assertRaises(KeyError):
+            d["A"]
+
+        d["A"] = 0.2
+        self.assertEqual(d["A"], 0.2)
+        d["A"] = 0.3
+        self.assertEqual(d["A"], 0.3)
+        del d["A"]
+
+        with self.assertRaises(KeyError):
+            d["A"]
+
+        with self.assertRaises(TypeError):
+            d[12]
+
+    # def test_contains(self):
+
+    def test_constructor(self):
+        d = Distribution(["A", "B"], [0.3, 0.7])
+        self.assertEqual(d["A"], 0.3)
+        self.assertEqual(d["B"], 0.7)
+
     def test_insert(self):
         d = Distribution()
         self.assertEqual(d.size(), 0)
@@ -37,7 +85,5 @@ class TestDistribution(unittest.TestCase):
         self.assertEqual(d.size(), 2)
 
     def test_entropy(self):
-        d = Distribution()
-        d.insert("A", 0.5)
-        d.insert("B", 0.5)
+        d = Distribution(["A", "B"], [0.5, 0.5])
         assert_allclose(d.entropy(), [1])

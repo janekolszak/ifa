@@ -24,6 +24,7 @@ SOFTWARE.
 
 #include "distribution_impl.hpp"
 #include <cmath>
+#include <stdexcept>
 
 namespace ifa {
 
@@ -42,9 +43,43 @@ unsigned int Distribution::size() const
     return dist.size();
 }
 
-void Distribution::insert(const std::string& event, double probability)
+bool Distribution::contains(const std::string &event) const
+{
+    return static_cast<bool>(dist.count(event));
+}
+
+double Distribution::get(const std::string &event) const
+{
+    return dist.at(event);
+}
+
+void Distribution::set(const std::string &event, const double probability)
+{
+    dist[event] = probability;
+}
+
+void Distribution::erase(const std::string &event)
+{
+    dist.erase(event);
+}
+
+void Distribution::insert(const std::string &event, const double probability)
 {
     dist.emplace(event, probability);
+}
+
+void Distribution::startIteration()
+{
+    m_it = dist.begin();
+}
+
+std::pair<std::string, double> Distribution::next()
+{
+    if (m_it == dist.end()) {
+        throw std::out_of_range("End of sequence");
+    }
+
+    return *(m_it++);
 }
 
 double Distribution::entropy() const

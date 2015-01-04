@@ -23,12 +23,20 @@
 import cython
 from libcpp.string cimport string
 from libcpp.vector cimport vector
+from libcpp.pair cimport pair
+from libcpp cimport bool
 
 cdef extern from "distribution_impl.hpp" namespace "ifa":
     cdef cppclass Distribution:
         Distribution() except +
         int size()
+        bool contains(string)
+        double get(string) except +
+        void set(string, double) except +
+        void erase(string)
         void insert(string, double)
+        void startIteration()
+        pair[string, double] next() except +
         double entropy()
 
 

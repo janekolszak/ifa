@@ -40,9 +40,19 @@ public:
     unsigned int size() const;
     double entropy() const;
 
-    void insert(const std::string &event, double probability);
+    bool contains(const std::string &event) const;
+    double get(const std::string &event) const;
+    void set(const std::string &event, const double probability);
+    void erase(const std::string &event);
+    void insert(const std::string &event, const double probability);
+
+    void startIteration();
+    std::pair<std::string, double> next();
 
     Map dist;
+
+private:
+    Map::iterator m_it;
 };
 
 } // namespace ifa
