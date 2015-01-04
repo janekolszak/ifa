@@ -70,7 +70,15 @@ class TestDistribution(unittest.TestCase):
         with self.assertRaises(TypeError):
             d[12]
 
-    # def test_contains(self):
+    def test_contains(self):
+        d = Distribution(["A", "B"], [0.3, 0.7])
+        self.assertTrue(d.contains("A"))
+        self.assertFalse(d.contains("C"))
+
+    def test_normalize(self):
+        d = Distribution(["A", "B"], [3, 3])
+        d.normalize()
+        self.assertEqual(d["A"], 0.5)
 
     def test_constructor(self):
         d = Distribution(["A", "B"], [0.3, 0.7])

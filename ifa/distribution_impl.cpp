@@ -38,6 +38,32 @@ Distribution::~Distribution()
 
 }
 
+Distribution* Distribution::common(const Distribution *q)
+{
+    Distribution *commonDistr = new Distribution();
+    for (const auto &entry : dist) {
+        if (q->contains(entry.first)) {
+            commonDistr->set(entry.first, entry.second);
+        }
+    }
+
+    commonDistr->normalize();
+
+    return commonDistr;
+}
+
+void Distribution::normalize()
+{
+    double sum = 0;
+    for (const auto &entry : dist) {
+        sum += entry.second;
+    }
+
+    for (auto &entry : dist) {
+        entry.second /= sum;
+    }
+}
+
 unsigned int Distribution::size() const
 {
     return dist.size();

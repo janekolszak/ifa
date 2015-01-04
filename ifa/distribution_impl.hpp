@@ -37,8 +37,11 @@ public:
 
     Distribution();
     ~Distribution();
+
+    Distribution* common(const Distribution *q);
+
+
     unsigned int size() const;
-    double entropy() const;
 
     bool contains(const std::string &event) const;
     double get(const std::string &event) const;
@@ -46,8 +49,12 @@ public:
     void erase(const std::string &event);
     void insert(const std::string &event, const double probability);
 
+    void normalize();
+
     void startIteration();
     std::pair<std::string, double> next();
+
+    double entropy() const;
 
     Map dist;
 

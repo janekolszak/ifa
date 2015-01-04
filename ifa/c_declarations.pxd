@@ -38,6 +38,8 @@ cdef extern from "distribution_impl.hpp" namespace "ifa":
         void startIteration()
         pair[string, double] next() except +
         double entropy()
+        void normalize()
+        Distribution* common(Distribution*)
 
 
 cdef extern from "divergence_impl.hpp" namespace "ifa":

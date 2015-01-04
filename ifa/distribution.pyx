@@ -79,15 +79,23 @@ cdef class Distribution:
     def __len__(self):
         return self.thisptr.size()
 
+    def __div__(self, q):
+        return self.thisptr 
+
     def size(self):
         return self.thisptr.size()
 
     def insert(self, event, probability):
         self.thisptr.insert(event, probability)
 
+    def normalize(self):
+        self.thisptr.normalize()
+
     def entropy(self):
         return self.thisptr.entropy()
 
+    def contains(self, event):
+        return self.thisptr.contains(event)
 
 # THE line below does not work:
 # from cython.operator cimport dereference, preincrement
