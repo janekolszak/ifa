@@ -19,14 +19,8 @@ from ifa.divergence import jsd
 
 from numpy.testing import assert_allclose
 
-p = Distribution()
-p.insert("A", 0.5)
-p.insert("B", 0.5)
-
-q = Distribution()
-q.insert("A", 0.5)
-q.insert("C", 0.5)
+p = Distribution(["A", "B"], [0.5, 0.5])
+q = Distribution(["A", "C"], [0.5, 0.5])
 
 assert_allclose(jsd(p, 0.5, q, 0.5), [0.5])
-        
 ````
