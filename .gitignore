@@ -58,4 +58,6 @@ build/
 ifa/build/
 
 # Cython
-ifa/interface.cpp
+ifa/utils.cpp
+ifa/divergence.cpp
+ifa/distribution.cpp
