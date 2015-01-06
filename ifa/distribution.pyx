@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 import cython
+import ctypes
 import numpy as np
 cimport numpy as np
 
@@ -28,6 +29,7 @@ cimport c_declarations
 from c_declarations cimport Distribution as CDistribution
 
 from libcpp.string cimport string
+from libcpp.vector cimport vector
 
 cdef class Distribution:
     def __cinit__(self, events = None, probabilities = None):
@@ -102,10 +104,54 @@ cdef class Distribution:
         return self.thisptr.contains(event)
 
 
-def common(Distribution p, Distribution q):
+cpdef common(Distribution p, Distribution q):
     r = Distribution()
     c_declarations.common(p.thisptr, q.thisptr, r.thisptr)
     return r
 
-def direction(Distribution p, Distribution q):
+cpdef direction(Distribution p, Distribution q):
     return c_declarations.direction(p.thisptr, q.thisptr)
+
+cpdef getStore(distributions):
+    n = len(distributions)
+    # cdef np.ndarray[np.double_t, ndim=1, mode='c'] store
+    cdef np.ndarray[CDistribution, ndim=1, mode='c'] c
+    c = np.empty((n,), dtype = CDistribution)
+    return c
+    # store = np.empty((n,), dtype = ctypes.c_void_p)
+    # store = np.ascontiguousarray(store, dtype= ctypes.c_void_p)
+    # for i, d in enumerate(distributions):
+    #     store[i] = (<Distribution?>d).thisptr
+    # return store
+
+
+
+@cython.boundscheck(False)
+def compute_data(vector[Distribution] distributions, vector[double] weights, int chunkSize):
+    cdef int n = distributions.size()
+    cdef int ret_size = (n - 1) * n / 2
+
+    cdef np.ndarray[int, ndim=1, mode='c'] pIdxs
+    cdef np.ndarray[int, ndim=1, mode='c'] qIdxs
+    cdef np.ndarray[double, ndim=1, mode='c'] index_ds
+    cdef np.ndarray[int, ndim=1, mode='c'] directions
+
+    pIdxs = np.empty((ret_size,), dtype = ctypes.c_int)
+    qIdxs = np.empty((ret_size,), dtype = ctypes.c_int)
+    index_ds = np.empty((ret_size,), dtype = ctypes.c_double)
+    directions = np.empty((ret_size,), dtype = ctypes.c_int)
+
+    cdef int i, j, k
+    print "Compute Data"
+
+    for r in range():
+        for i in prange(1, n, nogil=True, schedule="dynamic", chunksize=1):
+            c_logd(i);
+            for j in range(i, n):
+                k = n * (i - 1) + j - i * (i - 1) / 2 - i
+                pIdxs[k] = i
+                qIdxs[k] = j
+                index_ds[k] = c_index_d(distributions[i], distributions[j], weights[i], weights[j])
+                directions[k] = c_direction(distributions[i], distributions[j])
+
+    return (pIdxs, qIdxs, index_ds, directions)

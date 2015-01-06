@@ -29,4 +29,3 @@ from c_declarations cimport Distribution as CDistribution
 cdef class Distribution:
     cdef CDistribution *thisptr
 
-# ctypedef np.ndarray[CDistribution *, ndim=1, mode='c'] DistributionStore

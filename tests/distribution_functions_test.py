@@ -23,7 +23,7 @@
 import unittest
 from numpy.testing import assert_allclose
 
-from ifa.distribution import Distribution, common, direction
+from ifa.distribution import Distribution, common, direction, getStore
 import numpy as np
 
 
@@ -49,3 +49,8 @@ class TestDistributionFunctions(unittest.TestCase):
         q = Distribution(["A", "B"], [0.3, 0.7])
         self.assertEqual(direction(p, q), -direction(q, p))
         self.assertEqual(direction(p, p), 0)
+
+    def test_getStore(self):
+        p = Distribution(["A", "B", "C"], [0.3, 0.3, 0.4])
+        q = Distribution(["A", "B"], [0.3, 0.7])
+        print getStore([p, q])
