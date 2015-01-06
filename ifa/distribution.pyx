@@ -80,6 +80,9 @@ cdef class Distribution:
     def __len__(self):
         return self.thisptr.size()
 
+    def __str__(self):
+        return "{" + ", ".join(['"'+ str(e) + '"' + ": " + str(p) for e, p in self]) + "}"
+
     def size(self):
         return self.thisptr.size()
 

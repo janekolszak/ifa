@@ -29,6 +29,10 @@ import numpy as np
 
 class TestDistribution(unittest.TestCase):
 
+    def test_str(self):
+        d = Distribution(["A", "B"], [0.3, 0.7])
+        self.assertEqual(str(d), '{"A": 0.3, "B": 0.7}')
+
     def test_iteration(self):
         d = Distribution(["A", "B"], [0.3, 0.7])
 
