@@ -28,6 +28,7 @@ SOFTWARE.
 namespace ifa {
 
 double entropy(const double probabilities[], const unsigned size);
+void logger(double x);
 
 } // namespace ifa
 

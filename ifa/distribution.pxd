@@ -20,7 +20,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import ctypes
+import numpy as np
+cimport numpy as np
+
 from c_declarations cimport Distribution as CDistribution
 
 cdef class Distribution:
     cdef CDistribution *thisptr
+
+# ctypedef np.ndarray[CDistribution *, ndim=1, mode='c'] DistributionStore

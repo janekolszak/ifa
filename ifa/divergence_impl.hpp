@@ -39,6 +39,11 @@ double jsd(const Distribution *p,
            const Distribution *q,
            const double q_weight);
 
+double indexD(const Distribution *p,
+              const double p_weight,
+              const Distribution *q,
+              const double q_weight);
+
 } // namespace ifa
 
 #endif // IFA_DIVERGENCE_HPP

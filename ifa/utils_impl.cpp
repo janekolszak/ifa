@@ -24,6 +24,8 @@ SOFTWARE.
 
 #include "utils_impl.hpp"
 #include <cmath>
+#include <iomanip>
+#include <iostream>
 
 namespace ifa {
 
@@ -38,4 +40,8 @@ double entropy(const double probabilities[], const unsigned size)
     return -1 * entropy;
 }
 
+void logger(double x)
+{
+    std::cout << std::setprecision(6) << x << std::endl;
+}
 } // namespace ifa

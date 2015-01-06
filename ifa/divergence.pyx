@@ -26,6 +26,7 @@ cimport numpy as np
 from libcpp.vector cimport vector
 
 from c_declarations cimport jsd as c_jsd
+from c_declarations cimport indexD as c_indexD
 from c_declarations cimport Distribution as CDistribution
 from distribution cimport Distribution
 
@@ -47,3 +48,7 @@ from distribution cimport Distribution
 cpdef jsd(p, double p_weight, q, double q_weight):
     return c_jsd((<Distribution?>p).thisptr, p_weight,
                  (<Distribution?>q).thisptr, q_weight)
+
+cpdef indexD(p, double p_weight, q, double q_weight):
+    return c_indexD((<Distribution?>p).thisptr, p_weight,
+                    (<Distribution?>q).thisptr, q_weight)

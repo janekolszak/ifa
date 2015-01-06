@@ -24,7 +24,7 @@ import unittest
 from numpy.testing import assert_allclose
 
 from ifa.distribution import Distribution
-from ifa.divergence import jsd
+from ifa.divergence import jsd, indexD
 import numpy as np
 
 
@@ -35,3 +35,16 @@ class TestDivergence(unittest.TestCase):
         q = Distribution(["A", "C"], [0.5, 0.5])
 
         assert_allclose(jsd(p, 0.5, q, 0.5), [0.5])
+
+    def test_indexD(self):
+        p = Distribution(["A", "B"], [0.5, 0.5])
+        q = Distribution(["A", "C"], [0.5, 0.5])
+        r = Distribution(["D", "C"], [0.5, 0.5])
+
+        assert_allclose(indexD(p, 5, q, 5), [0.5])
+        assert_allclose(indexD(p, 5, p, 5), [0])
+        assert_allclose(indexD(p, 5, p, 3), [0])
+        assert_allclose(indexD(p, 1, p, 3), [0])
+        assert_allclose(indexD(p, 5, r, 5), [1])
+        assert_allclose(indexD(p, 5, r, 2), [1])
+        assert_allclose(indexD(p, 5, r, 9), [1])

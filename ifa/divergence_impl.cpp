@@ -78,4 +78,15 @@ double jsd(const Distribution *p,
     return sumDist.entropy() - entropySum;
 }
 
+double indexD(const Distribution *p,
+              const double p_weight,
+              const Distribution *q,
+              const double q_weight)
+{
+    double wp = p_weight / (p_weight + q_weight);
+    double wq = q_weight / (p_weight + q_weight);
+    double d = jsd(p, wp, q, wq);
+    return d / (-wp * std::log2(wp) - wq * std::log2(wq));
+}
+
 } // namespace ifa

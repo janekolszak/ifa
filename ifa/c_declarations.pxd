@@ -48,6 +48,8 @@ cdef extern from "distribution_impl.hpp" namespace "ifa":
 cdef extern from "divergence_impl.hpp" namespace "ifa":
     # double jsd(vector[Distribution] distributions, vector[double] weights) nogil
     double jsd(Distribution *p, double p_weight, Distribution *q, double q_weight) nogil
+    double indexD(Distribution *p, double p_weight, Distribution *q, double q_weight) nogil
 
 cdef extern from "utils_impl.hpp" namespace "ifa":
     double entropy(double *probabilities, int size) nogil
+    void logger(double x) nogil

@@ -148,4 +148,5 @@ int direction(const Distribution *p, const Distribution *q)
 
     return negSign(tp - tq);
 }
+
 } // namespace ifa
