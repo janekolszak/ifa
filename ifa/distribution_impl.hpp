@@ -38,9 +38,6 @@ public:
     Distribution();
     ~Distribution();
 
-    Distribution* common(const Distribution *q);
-
-
     unsigned int size() const;
 
     bool contains(const std::string &event) const;
@@ -61,6 +58,9 @@ public:
 private:
     Map::iterator m_it;
 };
+
+
+void common(const Distribution *p, const Distribution *q, Distribution *result);
 
 } // namespace ifa
 

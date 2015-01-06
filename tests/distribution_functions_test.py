@@ -20,32 +20,26 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import cython
-from libcpp.string cimport string
-from libcpp.vector cimport vector
-from libcpp.pair cimport pair
-from libcpp cimport bool
+import unittest
+from numpy.testing import assert_allclose
 
-cdef extern from "distribution_impl.hpp" namespace "ifa":
-    cdef cppclass Distribution:
-        Distribution() except +
-        int size()
-        bool contains(string)
-        double get(string) except +
-        void set(string, double) except +
-        void erase(string)
-        void insert(string, double)
-        void startIteration()
-        pair[string, double] next() except +
-        double entropy()
-        void normalize()
-
-    void common(Distribution *p, Distribution *q, Distribution *result) nogil
+from ifa.distribution import Distribution, common
+import numpy as np
 
 
-cdef extern from "divergence_impl.hpp" namespace "ifa":
-    # double jsd(vector[Distribution] distributions, vector[double] weights) nogil
-    double jsd(Distribution *p, double p_weight, Distribution *q, double q_weight) nogil
+class TestDistributionFunctions(unittest.TestCase):
 
-cdef extern from "utils_impl.hpp" namespace "ifa":
-    double entropy(double *probabilities, int size) nogil
+    def test_common(self):
+        p = Distribution(["A", "B", "C"], [0.3, 0.3, 0.4])
+        q = Distribution(["A", "B"], [0.3, 0.7])
+        r = common(p, q)
+
+        self.assertEqual(len(r), 2)
+        self.assertEqual(r["A"], 0.5)
+        self.assertEqual(r["B"], 0.5)
+
+        r = common(q, p)
+
+        self.assertEqual(len(r), 2)
+        self.assertEqual(r["A"], 0.3)
+        self.assertEqual(r["B"], 0.7)

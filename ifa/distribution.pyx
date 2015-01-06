@@ -23,6 +23,8 @@
 import cython
 import numpy as np
 cimport numpy as np
+
+cimport c_declarations
 from c_declarations cimport Distribution as CDistribution
 
 from libcpp.string cimport string
@@ -34,7 +36,6 @@ cdef class Distribution:
         if (events is not None) and (probabilities is not None):
             for e, p in zip(events,probabilities):
                 self.thisptr.insert(e, p)
-
 
     def __dealloc__(self):
         del self.thisptr
@@ -79,9 +80,6 @@ cdef class Distribution:
     def __len__(self):
         return self.thisptr.size()
 
-    def __div__(self, q):
-        return self.thisptr 
-
     def size(self):
         return self.thisptr.size()
 
@@ -97,47 +95,8 @@ cdef class Distribution:
     def contains(self, event):
         return self.thisptr.contains(event)
 
-# THE line below does not work:
-# from cython.operator cimport dereference, preincrement
 
-# This one does work
-cimport cython.operator as co
-
-from cython.operator cimport dereference, preincrement
-cimport cython.operator as co
-
-# cdef extern from "myheader" namespace "my":
-#     cppclass iterator:
-#         iterator& operator++() 
-#         bint operator==(iterator)
-#         int operator*()
-
-# cdef class wi:
-#     cdef iterator* it
-#     cdef iterator* end
-
-#     def __cinit__(self, ):
-#         self.end = new iterator()
-
-#     # Most likely, you will be calling this directly from this 
-#     # or another Cython module, not from Python. 
-#     cdef set_iter(self, iterator* it):
-#         self.it = it
-
-#     def __iter__(self):
-#         return self 
-
-#     def __dealloc__(self):
-#         # This works by calling "delete" in C++, you should not
-#         # fear that Cython will call "free"
-#         del self.it 
-#         del self.end
-
-#     def __next__(self):
-#         # This works correctly by using "*it" and "*end" in the code,
-#         if  co.dereference( self.it ) == co.dereference( self.end ) :
-#             raise StopIteration()
-#         result =  co.dereference( co.dereference( self.it ) )
-#         # This also does the expected thing.
-#         co.preincrement(  co.dereference( self.it ) )
-#         return result
+def common(Distribution p, Distribution q):
+    r = Distribution()
+    c_declarations.common(p.thisptr, q.thisptr, r.thisptr)
+    return r

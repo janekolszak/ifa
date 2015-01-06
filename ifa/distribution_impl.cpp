@@ -38,20 +38,6 @@ Distribution::~Distribution()
 
 }
 
-Distribution* Distribution::common(const Distribution *q)
-{
-    Distribution *commonDistr = new Distribution();
-    for (const auto &entry : dist) {
-        if (q->contains(entry.first)) {
-            commonDistr->set(entry.first, entry.second);
-        }
-    }
-
-    commonDistr->normalize();
-
-    return commonDistr;
-}
-
 void Distribution::normalize()
 {
     double sum = 0;
@@ -118,4 +104,17 @@ double Distribution::entropy() const
 
     return -1 * entropy;
 }
+
+
+void common(const Distribution *p, const Distribution *q, Distribution *result)
+{
+    for (const auto &entry : p->dist) {
+        if (q->contains(entry.first)) {
+            result->set(entry.first, entry.second);
+        }
+    }
+
+    result->normalize();
+}
+
 } // namespace ifa
