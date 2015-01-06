@@ -23,7 +23,7 @@
 import unittest
 from numpy.testing import assert_allclose
 
-from ifa.distribution import Distribution, common
+from ifa.distribution import Distribution, common, direction
 import numpy as np
 
 
@@ -43,3 +43,9 @@ class TestDistributionFunctions(unittest.TestCase):
         self.assertEqual(len(r), 2)
         self.assertEqual(r["A"], 0.3)
         self.assertEqual(r["B"], 0.7)
+
+    def test_direction(self):
+        p = Distribution(["A", "B", "C"], [0.3, 0.3, 0.4])
+        q = Distribution(["A", "B"], [0.3, 0.7])
+        self.assertEqual(direction(p, q), -direction(q, p))
+        self.assertEqual(direction(p, p), 0)

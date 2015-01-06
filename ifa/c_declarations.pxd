@@ -30,6 +30,7 @@ cdef extern from "distribution_impl.hpp" namespace "ifa":
     cdef cppclass Distribution:
         Distribution() except +
         int size()
+        bool isEmpty()
         bool contains(string)
         double get(string) except +
         void set(string, double) except +
@@ -41,6 +42,7 @@ cdef extern from "distribution_impl.hpp" namespace "ifa":
         void normalize()
 
     void common(Distribution *p, Distribution *q, Distribution *result) nogil
+    int direction(Distribution *p, Distribution *q) nogil
 
 
 cdef extern from "divergence_impl.hpp" namespace "ifa":

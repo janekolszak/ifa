@@ -86,6 +86,9 @@ cdef class Distribution:
     def size(self):
         return self.thisptr.size()
 
+    def isEmpty(self):
+        return self.thisptr.isEmpty()
+
     def insert(self, event, probability):
         self.thisptr.insert(event, probability)
 
@@ -103,3 +106,6 @@ def common(Distribution p, Distribution q):
     r = Distribution()
     c_declarations.common(p.thisptr, q.thisptr, r.thisptr)
     return r
+
+def direction(Distribution p, Distribution q):
+    return c_declarations.direction(p.thisptr, q.thisptr)

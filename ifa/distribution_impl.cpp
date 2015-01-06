@@ -25,8 +25,17 @@ SOFTWARE.
 #include "distribution_impl.hpp"
 #include <cmath>
 #include <stdexcept>
+#include <memory>
 
 namespace ifa {
+
+namespace {
+inline
+int negSign(double x)
+{
+    return (x > 0) ? -1 : ((x < 0) ? 1 : 0);
+}
+} // namespace
 
 Distribution::Distribution()
 {
@@ -53,6 +62,11 @@ void Distribution::normalize()
 unsigned int Distribution::size() const
 {
     return dist.size();
+}
+
+bool Distribution::isEmpty() const
+{
+    return dist.empty();
 }
 
 bool Distribution::contains(const std::string &event) const
@@ -117,4 +131,21 @@ void common(const Distribution *p, const Distribution *q, Distribution *result)
     result->normalize();
 }
 
+int direction(const Distribution *p, const Distribution *q)
+{
+    std::unique_ptr<Distribution> cP (new Distribution());
+    common(p, q, cP.get());
+
+    if (cP->isEmpty()) {
+        return 0;
+    }
+
+    std::unique_ptr<Distribution> cQ(new Distribution());
+    common(q, p, cQ.get());
+
+    double tp = cP->entropy() / (cP->size() / p->size());
+    double tq = cQ->entropy() / (cQ->size() / q->size());
+
+    return negSign(tp - tq);
+}
 } // namespace ifa

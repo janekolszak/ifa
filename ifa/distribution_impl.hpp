@@ -39,6 +39,8 @@ public:
     ~Distribution();
 
     unsigned int size() const;
+    bool isEmpty() const;
+
 
     bool contains(const std::string &event) const;
     double get(const std::string &event) const;
@@ -61,6 +63,7 @@ private:
 
 
 void common(const Distribution *p, const Distribution *q, Distribution *result);
+int direction(const Distribution *p, const Distribution *q);
 
 } // namespace ifa
 

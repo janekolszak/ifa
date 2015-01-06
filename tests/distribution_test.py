@@ -89,6 +89,13 @@ class TestDistribution(unittest.TestCase):
         self.assertEqual(d["A"], 0.3)
         self.assertEqual(d["B"], 0.7)
 
+    def test_isEmpty(self):
+        d = Distribution(["A", "B"], [0.3, 0.7])
+        self.assertFalse(d.isEmpty())
+
+        d = Distribution()
+        self.assertTrue(d.isEmpty())
+
     def test_insert(self):
         d = Distribution()
         self.assertEqual(d.size(), 0)
