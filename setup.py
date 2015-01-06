@@ -14,6 +14,9 @@ flags = ["-Ofast",
          "-flto",
          "-march=native"]
 
+# TODO: Delete before release
+flags = ["-O0", "-std=c++11"]
+
 # extra_link_args=['-fopenmp'],
 
 # "-fopenmp"
@@ -49,6 +52,7 @@ setup(
                                      sources=[
                                          'ifa/divergence.pyx',
                                          'ifa/divergence_impl.cpp',
+                                         'ifa/utils_impl.cpp',
                                          'ifa/distribution_impl.cpp'
                                      ],
                                      language="c++",
