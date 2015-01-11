@@ -108,5 +108,5 @@ def compute_data(distributions, vector[double] weights, int chunkSize):
     print "Compute Data"
     for i_min in range(0, n, chunkSize):
         i_max = min(i_min + chunkSize, n)
-        # print i_min, i_max, c_transformIdx(n, i_max-1, n-1) - c_transformIdx(n, i_min, i_min) + 1
+        print i_min/float(n) * 100, i_max/float(n) * 100
         yield _compute_chunk(distributionPtrs, weights, i_min, i_max, n)

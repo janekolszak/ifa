@@ -89,6 +89,10 @@ class TestDistribution(unittest.TestCase):
         self.assertEqual(d["A"], 0.3)
         self.assertEqual(d["B"], 0.7)
 
+        d = Distribution(dictionary={"A": 0.3, "B": 0.7})
+        self.assertEqual(d["A"], 0.3)
+        self.assertEqual(d["B"], 0.7)
+
     def test_isEmpty(self):
         d = Distribution(["A", "B"], [0.3, 0.7])
         self.assertFalse(d.isEmpty())

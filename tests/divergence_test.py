@@ -56,3 +56,6 @@ class TestDivergence(unittest.TestCase):
         l = [p, q, r]
         for w in compute_data(l, [2, 1, 3], 1):
             pass
+
+        for w in compute_data(l, [2, 1, 3], 3):
+            pass

@@ -33,12 +33,19 @@ from libcpp.string cimport string
 
 
 cdef class Distribution:
-    def __cinit__(self, events = None, probabilities = None):
+    def __cinit__(self, events = None, probabilities = None, dictionary = None):
         self.thisptr = new CDistribution()
 
         if (events is not None) and (probabilities is not None):
             for e, p in zip(events,probabilities):
                 self.thisptr.insert(e, p)
+            return
+
+        if dictionary is not None:
+            for e, p in dictionary.iteritems():
+                self.thisptr.insert(e, p)
+            return
+
 
     def __dealloc__(self):
         del self.thisptr
