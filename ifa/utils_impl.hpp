@@ -29,7 +29,7 @@ namespace ifa {
 
 double entropy(const double probabilities[], const unsigned size);
 void logger(double x);
-
+int transformIdx(const int n, const int i, const int j);
 } // namespace ifa
 
 #endif // IFA_UTILS_HPP

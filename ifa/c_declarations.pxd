@@ -53,3 +53,4 @@ cdef extern from "divergence_impl.hpp" namespace "ifa":
 cdef extern from "utils_impl.hpp" namespace "ifa":
     double entropy(double *probabilities, int size) nogil
     void logger(double x) nogil
+    int transformIdx(int n, int i, int j) nogil

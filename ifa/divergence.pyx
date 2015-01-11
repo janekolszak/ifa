@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 import cython
+import ctypes
 import numpy as np
 cimport numpy as np
 from libcpp.vector cimport vector
@@ -29,6 +30,7 @@ from c_declarations cimport jsd as c_jsd
 from c_declarations cimport indexD as c_indexD
 from c_declarations cimport direction as c_direction
 from c_declarations cimport logger as c_logger
+from c_declarations cimport transformIdx as c_transformIdx
 from c_declarations cimport Distribution as CDistribution
 from distribution cimport Distribution
 # from ifa.distribution import Distribution, direction
@@ -58,49 +60,53 @@ cpdef indexD(p, double p_weight, q, double q_weight):
     return c_indexD((<Distribution?>p).thisptr, p_weight,
                     (<Distribution?>q).thisptr, q_weight)
 
+@cython.boundscheck(False)
+cdef _compute_chunk(vector[CDistribution*] &distributionPtrs,
+                   vector[double] &weights,
+                   int i_min,
+                   int i_max,
+                   int n):
+    cdef int ret_size = c_transformIdx(n, i_max-1, n-1) - c_transformIdx(n, i_min, i_min) + 1
 
+    cdef np.ndarray[int, ndim=1, mode='c'] pIdxs
+    cdef np.ndarray[int, ndim=1, mode='c'] qIdxs
+    cdef np.ndarray[double, ndim=1, mode='c'] index_ds
+    cdef np.ndarray[int, ndim=1, mode='c'] directions
+
+    pIdxs = np.empty((ret_size,), dtype = ctypes.c_int)
+    qIdxs = np.empty((ret_size,), dtype = ctypes.c_int)
+    index_ds = np.empty((ret_size,), dtype = ctypes.c_double)
+    directions = np.empty((ret_size,), dtype = ctypes.c_int)
+    cdef int i, j, r, s,  last,k
+
+    for i in prange(i_min, i_max, nogil=True, schedule="dynamic", chunksize=1):
+            for j in range(i, n):
+                k = c_transformIdx(n, i, j) - c_transformIdx(n, i_min, i_min)
+
+                pIdxs[k] = i
+                qIdxs[k] = j
+                index_ds[k] = c_indexD(distributionPtrs[i],
+                                       weights[i],
+                                       distributionPtrs[j],
+                                       weights[j])
+
+                directions[k] = c_direction(distributionPtrs[i],
+                                            distributionPtrs[j])
+
+    return (pIdxs, qIdxs, index_ds, directions)
+
+
+@cython.boundscheck(False)
 def compute_data(distributions, vector[double] weights, int chunkSize):
-    cdef int n = distributions.size()
+    cdef int n = len(distributions)
     cdef int ret_size = (n - 1) * n / 2
 
     cdef vector[CDistribution*] distributionPtrs
     for d in distributions:
         distributionPtrs.push_back((<Distribution?>d).thisptr)
 
-    # cdef np.ndarray[int, ndim=1, mode='c'] pIdxs
-    # cdef np.ndarray[int, ndim=1, mode='c'] qIdxs
-    # cdef np.ndarray[double, ndim=1, mode='c'] index_ds
-    # cdef np.ndarray[int, ndim=1, mode='c'] directions
-
-    # pIdxs = np.empty((ret_size,), dtype = ctypes.c_int)
-    # qIdxs = np.empty((ret_size,), dtype = ctypes.c_int)
-    # index_ds = np.empty((ret_size,), dtype = ctypes.c_double)
-    # directions = np.empty((ret_size,), dtype = ctypes.c_int)
-
     print "Compute Data"
-    cdef int i, j, r, last
-    cdef vector[int] pIdxs
-    cdef vector[int] qIdxs
-    cdef vector[double] index_ds
-    cdef vector[int] directions
-
-    for r in range(0, n, chunkSize):
-        pIdxs.clear()
-        qIdxs.clear()
-        index_ds.clear()
-        directions.clear()
-        last = np.min(r + chunkSize, n)
-        for i in prange(r, last, nogil=True, schedule="dynamic", chunksize=1):
-            c_logger(i/n)
-            for j in range(i, n):
-    # #             k = n * (i - 1) + j - i * (i - 1) / 2 - i
-                pIdxs.push_back(i)
-                qIdxs.push_back(j)
-                index_ds.push_back(c_indexD(distributionPtrs[i],
-                                            weights[i],
-                                            distributionPtrs[j],
-                                            weights[j]))
-                directions.push_back(c_direction(distributionPtrs[i],
-                                                 distributionPtrs[j]))
-
-        yield (pIdxs, qIdxs, index_ds, directions)
+    for i_min in range(0, n, chunkSize):
+        i_max = min(i_min + chunkSize, n)
+        # print i_min, i_max, c_transformIdx(n, i_max-1, n-1) - c_transformIdx(n, i_min, i_min) + 1
+        yield _compute_chunk(distributionPtrs, weights, i_min, i_max, n)

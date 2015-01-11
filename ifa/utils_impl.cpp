@@ -44,4 +44,10 @@ void logger(double x)
 {
     std::cout << std::setprecision(6) << x << std::endl;
 }
+
+int transformIdx(const int n, const int i, const int j)
+{
+    return n * (i - 1) + j - i * (i - 1) / 2 - i;
+}
+
 } // namespace ifa
