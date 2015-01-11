@@ -15,11 +15,8 @@ flags = ["-Ofast",
          "-march=native"]
 
 # TODO: Delete before release
-flags = ["-O0", "-std=c++11"]
+# flags = ["-O0", "-std=c++11"]
 
-# extra_link_args=['-fopenmp'],
-
-# "-fopenmp"
 setup(
     name='ifa',
     packages=['ifa'],
@@ -56,7 +53,8 @@ setup(
                                          'ifa/distribution_impl.cpp'
                                      ],
                                      language="c++",
-                                     extra_compile_args=flags),
+                                     extra_compile_args=flags + ["-fopenmp"],
+                                     extra_link_args=['-fopenmp']),
 
 
                            ]),

@@ -77,21 +77,22 @@ cdef _compute_chunk(vector[CDistribution*] &distributionPtrs,
     qIdxs = np.empty((ret_size,), dtype = ctypes.c_int)
     index_ds = np.empty((ret_size,), dtype = ctypes.c_double)
     directions = np.empty((ret_size,), dtype = ctypes.c_int)
-    cdef int i, j, r, s,  last,k
+    cdef int i, j, k
 
     for i in prange(i_min, i_max, nogil=True, schedule="dynamic", chunksize=1):
-            for j in range(i, n):
-                k = c_transformIdx(n, i, j) - c_transformIdx(n, i_min, i_min)
+        c_logger(i)
+        for j in range(i, n):
+            k = c_transformIdx(n, i, j) - c_transformIdx(n, i_min, i_min)
 
-                pIdxs[k] = i
-                qIdxs[k] = j
-                index_ds[k] = c_indexD(distributionPtrs[i],
-                                       weights[i],
-                                       distributionPtrs[j],
-                                       weights[j])
+            pIdxs[k] = i
+            qIdxs[k] = j
+            index_ds[k] = c_indexD(distributionPtrs[i],
+                                   weights[i],
+                                   distributionPtrs[j],
+                                   weights[j])
 
-                directions[k] = c_direction(distributionPtrs[i],
-                                            distributionPtrs[j])
+            directions[k] = c_direction(distributionPtrs[i],
+                                        distributionPtrs[j])
 
     return (pIdxs, qIdxs, index_ds, directions)
 
@@ -108,5 +109,6 @@ def compute_data(distributions, vector[double] weights, int chunkSize):
     print "Compute Data"
     for i_min in range(0, n, chunkSize):
         i_max = min(i_min + chunkSize, n)
-        print i_min/float(n) * 100, i_max/float(n) * 100
+        print "Computing from" i_min/float(n) * 100, "% to", i_max/float(n) * 100, "%"
         yield _compute_chunk(distributionPtrs, weights, i_min, i_max, n)
+
