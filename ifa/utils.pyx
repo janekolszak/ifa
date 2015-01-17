@@ -25,7 +25,6 @@ import numpy as np
 cimport numpy as np
 
 from c_declarations cimport entropy as c_entropy
-from c_declarations cimport logger as c_logger
 
 @cython.boundscheck(False)
 cpdef entropy(np.ndarray[np.double_t, ndim=1, mode='c'] probabilities):

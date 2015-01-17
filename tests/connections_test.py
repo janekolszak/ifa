@@ -20,36 +20,23 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import cython
-import ctypes
+import unittest
+from numpy.testing import assert_allclose
+
+from ifa.distribution import Distribution
+from ifa.connections import compute
 import numpy as np
-cimport numpy as np
-from libcpp.vector cimport vector
 
-from c_declarations cimport jsd as c_jsd
-from c_declarations cimport indexD as c_indexD
-#from c_declarations cimport Distribution as CDistribution
-from distribution cimport Distribution
 
-# @cython.boundscheck(False)
-# cpdef jsd(np.ndarray[np.double_t, ndim=1, mode='c'] probabilities):
-#     return c_jsd(<double*> probabilities.data, probabilities.size)
+class TestConnections(unittest.TestCase):
 
-# @cython.boundscheck(False)
+    def test_compute(self):
+        p = Distribution(["A", "B"], [0.3, 0.7])
+        q = Distribution(["A", "B", "C"], [0.3, 0.3, 0.4])
+        r = Distribution(["D", "C"], [0.5, 0.5])
+        l = [p, q, r]
+        for w in compute(l, [2, 1, 3], 1, logOnScreen=False):
+            pass
 
-# cpdef jsd(distributions, vector[double] weights):
-#     cdef vector[CDistribution] dist
-#     cdef CDistribution p
-#     dist.push_back(p)
-#     # for d in distributions:
-#     #     dist.push_back(<CDistribution> d.thisptr)
-
-#     return c_jsd(dist, weights)
-
-cpdef jsd(p, double p_weight, q, double q_weight):
-    return c_jsd((<Distribution?>p).thisptr, p_weight,
-                 (<Distribution?>q).thisptr, q_weight)
-
-cpdef indexD(p, double p_weight, q, double q_weight):
-    return c_indexD((<Distribution?>p).thisptr, p_weight,
-                    (<Distribution?>q).thisptr, q_weight)
+        for w in compute(l, [2, 1, 3], 3, logOnScreen=False):
+            pass

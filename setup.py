@@ -49,14 +49,21 @@ setup(
                                      sources=[
                                          'ifa/divergence.pyx',
                                          'ifa/divergence_impl.cpp',
+                                         'ifa/distribution_impl.cpp'
+                                     ],
+                                     language="c++",
+                                     extra_compile_args=flags),
+
+                           Extension("ifa.connections",
+                                     sources=[
+                                         'ifa/connections.pyx',
+                                         'ifa/divergence_impl.cpp',
                                          'ifa/utils_impl.cpp',
                                          'ifa/distribution_impl.cpp'
                                      ],
                                      language="c++",
                                      extra_compile_args=flags + ["-fopenmp"],
                                      extra_link_args=['-fopenmp']),
-
-
                            ]),
     classifiers=[
         "Programming Language :: Cython",
