@@ -22,7 +22,7 @@ version = '0.0.3'
 setup(
     name='ifa',
     packages=['ifa'],
-    version=,
+    version=version,
     cmdclass={'build_ext': build_ext},
     license="MIT License",
     author="Jan Olszak",
