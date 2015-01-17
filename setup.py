@@ -17,10 +17,12 @@ flags = ["-Ofast",
 # TODO: Delete before release
 # flags = ["-O0", "-std=c++11"]
 
+version = '0.0.3'
+
 setup(
     name='ifa',
     packages=['ifa'],
-    version='0.0.1',
+    version=,
     cmdclass={'build_ext': build_ext},
     license="MIT License",
     author="Jan Olszak",
@@ -28,7 +30,7 @@ setup(
     description="A library for information flow analysis",
     keywords="information flow analysis entropy distribution",
     url="http://github.com/janekolszak/ifa",
-
+    download_url="https://github.com/janekolszak/ifa/archive/ifa-" + version + ".tar.gz",
     ext_modules=cythonize([Extension("ifa.utils",
                                      sources=[
                                          'ifa/utils.pyx',
