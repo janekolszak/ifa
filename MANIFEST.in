@@ -1,0 +1,8 @@
+include *.md
+include *.txt
+
+recursive-include ifa *.pyx
+recursive-include ifa *.cpp
+recursive-include ifa *.hpp
+recursive-include ifa *.pxd
+recursive-include ifa *.py
