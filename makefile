@@ -11,3 +11,4 @@ clean:
 	rm -rf ./build ./ifa/distribution.cpp
 	rm -rf ./build ./ifa/divergence.cpp
 	rm -rf ./build ./ifa/connections.cpp
+	rm -rf ./build ./ifa/MANIFEST
