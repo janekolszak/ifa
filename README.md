@@ -7,8 +7,11 @@ It's in Pre-alpha stage.
 Installation
 ============
 ````bash
-sudo make install
+pip install ifa
 ````
+Dependencies: 
+* cython (only for the installation)
+* numpy
 
 Usage
 =====
