@@ -4,6 +4,9 @@ main:
 install:
 	python setup.py install
 
+pypi:
+	python setup.py sdist upload -r pypi
+
 clean:
 	rm -rf ./build ./ifa/*.so
 	rm -rf ./build ./ifa/*.pyc
