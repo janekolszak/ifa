@@ -81,7 +81,8 @@ class TestDistribution(unittest.TestCase):
 
     def test_normalize(self):
         d = Distribution(["A", "B"], [3, 3])
-        d.normalize()
+        self.assertEqual(d.normalize(), 6)
+        self.assertEqual(d.getNormalizingConstant(), 6)
         self.assertEqual(d["A"], 0.5)
 
     def test_constructor(self):

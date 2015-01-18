@@ -31,20 +31,19 @@ from c_declarations cimport Distribution as CDistribution
 from libcpp.string cimport string
 
 
-
 cdef class Distribution:
-    def __cinit__(self, events = None, probabilities = None, dictionary = None):
+    def __cinit__(self, keys = None, values = None, dictionary = None, normalize = False):
         self.thisptr = new CDistribution()
 
-        if (events is not None) and (probabilities is not None):
-            for e, p in zip(events,probabilities):
-                self.thisptr.insert(e, p)
-            return
+        if (keys is not None) and (values is not None):
+            for k, v in zip(keys, values):
+                self.thisptr.insert(k, v)
+        elif dictionary is not None:
+            for k, v in dictionary.iteritems():
+                self.thisptr.insert(k, v)
 
-        if dictionary is not None:
-            for e, p in dictionary.iteritems():
-                self.thisptr.insert(e, p)
-            return
+        if normalize:
+            self.thisptr.normalize()
 
 
     def __dealloc__(self):
@@ -60,32 +59,33 @@ cdef class Distribution:
         except IndexError:
             raise StopIteration()
 
-    def __getitem__(self, event):
-        if type(event) is not str:
-            raise TypeError("Events should be str")
+    def __getitem__(self, key):
+        if type(key) is not str:
+            raise TypeError("Keys should be str")
 
         try:
-            return self.thisptr.get(event)
+            return self.thisptr.get(key)
         except IndexError:
-            raise KeyError("No such event")
+            raise KeyError("No such key")
 
-    def __setitem__(self, event, prob):
-        if type(event) is not str:
-            raise TypeError("Events should be str")
+    def __setitem__(self, key, value):
+        print(type(key))
+        if type(key) is not str:
+            raise TypeError("Keys should be str")
 
-        self.thisptr.set(event, prob)
+        self.thisptr.set(key, value)
 
-    def __delitem__(self, event):
-        if type(event) is not str:
-            raise TypeError("Events should be str")
+    def __delitem__(self, key):
+        if type(key) is not str:
+            raise TypeError("Keys should be str")
 
-        if not self.thisptr.contains(event):
-            raise KeyError("No such event")
+        if not self.thisptr.contains(key):
+            raise KeyError("No such key")
 
-        self.thisptr.erase(event)
+        self.thisptr.erase(key)
 
-    def __contains__(self, event):
-        return self.thisptr.contains(event)
+    def __contains__(self, key):
+        return self.thisptr.contains(key)
 
     def __len__(self):
         return self.thisptr.size()
@@ -99,17 +99,27 @@ cdef class Distribution:
     def isEmpty(self):
         return self.thisptr.isEmpty()
 
-    def insert(self, event, probability):
-        self.thisptr.insert(event, probability)
+    def insert(self, key, value):
+        self.thisptr.insert(key, value)
 
     def normalize(self):
-        self.thisptr.normalize()
+        if self.thisptr.isEmpty():
+            return None
+
+        return self.thisptr.normalize()
+
+    def getNormalizingConstant(self):
+        if self.thisptr.isEmpty():
+            return None
+
+        return self.thisptr.getNormalizingConstant()
 
     def entropy(self):
         return self.thisptr.entropy()
 
-    def contains(self, event):
-        return self.thisptr.contains(event)
+    def contains(self, key):
+        return self.thisptr.contains(key)
+
 
 
 cpdef common(Distribution p, Distribution q):
@@ -119,18 +129,3 @@ cpdef common(Distribution p, Distribution q):
 
 cpdef direction(Distribution p, Distribution q):
     return c_declarations.direction(p.thisptr, q.thisptr)
-
-# cpdef getStore(distributions):
-#     n = len(distributions)
-#     # cdef np.ndarray[np.double_t, ndim=1, mode='c'] store
-#     cdef np.ndarray[CDistribution, ndim=1, mode='c'] c
-#     c = np.empty((n,), dtype = CDistribution)
-    return c
-    # store = np.empty((n,), dtype = ctypes.c_void_p)
-    # store = np.ascontiguousarray(store, dtype= ctypes.c_void_p)
-    # for i, d in enumerate(distributions):
-    #     store[i] = (<Distribution?>d).thisptr
-    # return store
-
-
-

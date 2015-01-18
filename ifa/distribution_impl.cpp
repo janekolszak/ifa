@@ -47,16 +47,23 @@ Distribution::~Distribution()
 
 }
 
-void Distribution::normalize()
+double Distribution::normalize()
 {
-    double sum = 0;
+    normalizingConstant = 0;
     for (const auto &entry : dist) {
-        sum += entry.second;
+        normalizingConstant += entry.second;
     }
 
     for (auto &entry : dist) {
-        entry.second /= sum;
+        entry.second /= normalizingConstant;
     }
+
+    return normalizingConstant;
+}
+
+double Distribution::getNormalizingConstant()
+{
+    return normalizingConstant;
 }
 
 unsigned int Distribution::size() const
@@ -69,29 +76,29 @@ bool Distribution::isEmpty() const
     return dist.empty();
 }
 
-bool Distribution::contains(const std::string &event) const
+bool Distribution::contains(const std::string &key) const
 {
-    return static_cast<bool>(dist.count(event));
+    return static_cast<bool>(dist.count(key));
 }
 
-double Distribution::get(const std::string &event) const
+double Distribution::get(const std::string &key) const
 {
-    return dist.at(event);
+    return dist.at(key);
 }
 
-void Distribution::set(const std::string &event, const double probability)
+void Distribution::set(const std::string &key, const double value)
 {
-    dist[event] = probability;
+    dist[key] = value;
 }
 
-void Distribution::erase(const std::string &event)
+void Distribution::erase(const std::string &key)
 {
-    dist.erase(event);
+    dist.erase(key);
 }
 
-void Distribution::insert(const std::string &event, const double probability)
+void Distribution::insert(const std::string &key, const double value)
 {
-    dist.emplace(event, probability);
+    dist.emplace(key, value);
 }
 
 void Distribution::startIteration()
@@ -102,7 +109,7 @@ void Distribution::startIteration()
 std::pair<std::string, double> Distribution::next()
 {
     if (m_it == dist.end()) {
-        throw std::out_of_range("End of sequence");
+        throw std::out_of_range("IFA: End of sequence");
     }
 
     return *(m_it++);

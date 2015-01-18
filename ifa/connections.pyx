@@ -85,11 +85,11 @@ def compute(distributions, vector[double] weights, int chunkSize, logOnScreen = 
         distributionPtrs.push_back((<Distribution?>d).thisptr)
 
     if logOnScreen:
-        print "Compute Data"
+        print("Compute Data")
 
     for i_min in range(0, n, chunkSize):
         i_max = min(i_min + chunkSize, n)
         if logOnScreen:
-            print "Computing from", i_min/float(n) * 100, "% to", i_max/float(n) * 100, "%"
+            print("Computing from", i_min/float(n) * 100, "% to", i_max/float(n) * 100, "%")
         yield _compute_chunk(distributionPtrs, weights, i_min, i_max, n, logOnScreen)
 

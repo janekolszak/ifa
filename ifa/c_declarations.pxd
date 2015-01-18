@@ -39,7 +39,8 @@ cdef extern from "distribution_impl.hpp" namespace "ifa":
         void startIteration()
         pair[string, double] next() except +
         double entropy()
-        void normalize()
+        double normalize()
+        double getNormalizingConstant()
 
     void common(Distribution *p, Distribution *q, Distribution *result) nogil
     int direction(Distribution *p, Distribution *q) nogil

@@ -40,22 +40,19 @@ public:
 
     unsigned int size() const;
     bool isEmpty() const;
-
-
     bool contains(const std::string &event) const;
     double get(const std::string &event) const;
-    void set(const std::string &event, const double probability);
+    void set(const std::string &event, const double value);
     void erase(const std::string &event);
-    void insert(const std::string &event, const double probability);
-
-    void normalize();
-
+    void insert(const std::string &event, const double value);
+    double normalize();
+    double getNormalizingConstant();
     void startIteration();
     std::pair<std::string, double> next();
-
     double entropy() const;
 
     Map dist;
+    double normalizingConstant;
 
 private:
     Map::iterator m_it;

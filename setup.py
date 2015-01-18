@@ -7,18 +7,24 @@ from distutils.extension import Extension
 from Cython.Distutils import build_ext
 from Cython.Build import cythonize
 
-flags = ["-Ofast",
+flags = ["-O3",
          "-std=c++11",
          "-Wall",
          "-fomit-frame-pointer",
          "-flto",
-         "-march=native"]
+         "-march=native",
+         "-ffast-math",
+         "-funroll-loops",
+         "-Wno-cpp",
+         "-Wno-unused-function",
+         "-Wno-maybe-uninitialized"]
+
 
 # TODO: Delete before release
 # flags = ["-O0", "-std=c++11"]
-
+ext_modules = [Extension("parcel", ["parcel.pyx"], extra_compile_args=["-O3", "-march=native", "-ffast-math", "-funroll-loops"],
+                         )]
 version = '0.0.3'
-
 setup(
     name='ifa',
     packages=['ifa'],
@@ -37,7 +43,8 @@ setup(
                                          'ifa/utils_impl.cpp'
                                      ],
                                      language="c++",
-                                     extra_compile_args=flags),
+                                     extra_compile_args=flags,
+                                     define_macros=[("NPY_NO_DEPRECATED_API", None)]),
 
                            Extension("ifa.distribution",
                                      sources=[
@@ -66,7 +73,9 @@ setup(
                                      language="c++",
                                      extra_compile_args=flags + ["-fopenmp"],
                                      extra_link_args=['-fopenmp']),
-                           ]),
+                           ],
+                          compiler_directives={'language_level': 2}
+                          ),
     classifiers=[
         "Programming Language :: Cython",
         "Programming Language :: C++",
