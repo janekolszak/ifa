@@ -1,3 +1,5 @@
+#cython: boundscheck=False, wraparound=False, overflowcheck=True, embedsignature=True
+
 # The MIT License (MIT)
 #
 # Copyright (c) 2014 Jan Olszak (j.olszak@gmail.com)

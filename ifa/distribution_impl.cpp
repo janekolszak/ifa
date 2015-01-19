@@ -126,7 +126,6 @@ double Distribution::entropy() const
     return -1 * entropy;
 }
 
-
 void common(const Distribution *p, const Distribution *q, Distribution *result)
 {
     for (const auto &entry : p->dist) {

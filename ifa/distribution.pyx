@@ -1,3 +1,5 @@
+#cython: boundscheck=False, wraparound=False, overflowcheck=True, embedsignature=True
+
 # The MIT License (MIT)
 #
 # Copyright (c) 2014 Jan Olszak (j.olszak@gmail.com)
@@ -119,8 +121,6 @@ cdef class Distribution:
 
     def contains(self, key):
         return self.thisptr.contains(key)
-
-
 
 cpdef common(Distribution p, Distribution q):
     r = Distribution()

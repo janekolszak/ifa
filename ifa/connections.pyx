@@ -1,3 +1,5 @@
+#cython: boundscheck=False, wraparound=False, overflowcheck=True, embedsignature=True
+
 # The MIT License (MIT)
 #
 # Copyright (c) 2014 Jan Olszak (j.olszak@gmail.com)
@@ -36,7 +38,6 @@ from distribution cimport Distribution
 
 from cython.parallel import prange
 
-@cython.boundscheck(False)
 cdef _compute_chunk(vector[CDistribution*] &distributionPtrs,
                     vector[double] &weights,
                     int i_min,
@@ -74,8 +75,6 @@ cdef _compute_chunk(vector[CDistribution*] &distributionPtrs,
 
     return (pIdxs, qIdxs, index_ds, directions)
 
-
-@cython.boundscheck(False)
 def compute(distributions, vector[double] weights, int chunkSize, logOnScreen = True):
     cdef int n = len(distributions)
     cdef int ret_size = (n - 1) * n / 2
