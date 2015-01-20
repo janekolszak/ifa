@@ -13,6 +13,12 @@ Dependencies:
 * cython (only for the installation)
 * numpy
 
+... or if you want the developmen version:
+````bash
+git clone https://github.com/janekolszak/ifa.git;
+cd ifa;
+sudo make install;
+````
 Usage
 =====
 Computing Jensen–Shannon divergence:
