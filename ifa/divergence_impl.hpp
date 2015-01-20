@@ -44,6 +44,9 @@ double indexD(const Distribution *p,
               const Distribution *q,
               const double q_weight);
 
+double kld(const Distribution *p,
+           const Distribution *q);
+
 } // namespace ifa
 
 #endif // IFA_DIVERGENCE_HPP

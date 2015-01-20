@@ -1,3 +1,5 @@
+#cython: boundscheck=False, wraparound=False, overflowcheck=True, embedsignature=True
+
 # The MIT License (MIT)
 #
 # Copyright (c) 2014 Jan Olszak (j.olszak@gmail.com)
@@ -19,7 +21,6 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-#cython: boundscheck=False, wraparound=False, overflowcheck=True, embedsignature=True
 
 import cython
 from libcpp.string cimport string
@@ -51,6 +52,7 @@ cdef extern from "divergence_impl.hpp" namespace "ifa":
     # double jsd(vector[Distribution] distributions, vector[double] weights) nogil
     double jsd(Distribution *p, double p_weight, Distribution *q, double q_weight) nogil
     double indexD(Distribution *p, double p_weight, Distribution *q, double q_weight) nogil
+    double kld(Distribution *p, Distribution *q) nogil
 
 cdef extern from "utils_impl.hpp" namespace "ifa":
     double entropy(double *probabilities, int size) nogil

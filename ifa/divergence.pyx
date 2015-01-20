@@ -29,6 +29,7 @@ cimport numpy as np
 from libcpp.vector cimport vector
 
 from c_declarations cimport jsd as c_jsd
+from c_declarations cimport kld as c_kld
 from c_declarations cimport indexD as c_indexD
 #from c_declarations cimport Distribution as CDistribution
 from distribution cimport Distribution
@@ -55,3 +56,7 @@ cpdef jsd(p, double p_weight, q, double q_weight):
 cpdef indexD(p, double p_weight, q, double q_weight):
     return c_indexD((<Distribution?>p).thisptr, p_weight,
                     (<Distribution?>q).thisptr, q_weight)
+
+cpdef kld(p,q):
+    # http://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence
+    return c_kld((<Distribution?>p).thisptr, (<Distribution?>q).thisptr)

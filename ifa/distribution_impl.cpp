@@ -78,7 +78,7 @@ bool Distribution::isEmpty() const
 
 bool Distribution::contains(const std::string &key) const
 {
-    return static_cast<bool>(dist.count(key));
+    return dist.count(key) != 0;
 }
 
 double Distribution::get(const std::string &key) const

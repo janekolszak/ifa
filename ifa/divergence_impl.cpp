@@ -24,6 +24,7 @@ SOFTWARE.
 
 #include "divergence_impl.hpp"
 #include <cmath>
+#include <iostream>
 
 namespace ifa {
 
@@ -88,5 +89,19 @@ double indexD(const Distribution *p,
     double d = jsd(p, wp, q, wq);
     return d / (-wp * std::log2(wp) - wq * std::log2(wq));
 }
+
+
+double kld(const Distribution *p,
+           const Distribution *q)
+{
+    double divergence = 0.0;
+    for (const auto &pElem : p->dist) {
+        if (q->contains(pElem.first)) {
+            divergence += pElem.second * std::log2(pElem.second / q->get(pElem.first));
+        }
+    }
+    return divergence;
+}
+
 
 } // namespace ifa
