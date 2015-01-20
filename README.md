@@ -27,3 +27,11 @@ q = Distribution(["A", "C"], [0.5, 0.5])
 
 assert_allclose(jsd(p, 0.5, q, 0.5), [0.5])
 ````
+
+What's inside:
+==============
+* Distribution class with some basic operations
+* Divergences:
+ * Jensen–Shannon divergence
+ * Kullback–Leibler divergence
+* Functions to compute information flow between destribution
