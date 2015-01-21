@@ -31,23 +31,7 @@ from libcpp.vector cimport vector
 from c_declarations cimport jsd as c_jsd
 from c_declarations cimport kld as c_kld
 from c_declarations cimport indexD as c_indexD
-#from c_declarations cimport Distribution as CDistribution
 from distribution cimport Distribution
-
-# @cython.boundscheck(False)
-# cpdef jsd(np.ndarray[np.double_t, ndim=1, mode='c'] probabilities):
-#     return c_jsd(<double*> probabilities.data, probabilities.size)
-
-# @cython.boundscheck(False)
-
-# cpdef jsd(distributions, vector[double] weights):
-#     cdef vector[CDistribution] dist
-#     cdef CDistribution p
-#     dist.push_back(p)
-#     # for d in distributions:
-#     #     dist.push_back(<CDistribution> d.thisptr)
-
-#     return c_jsd(dist, weights)
 
 cpdef jsd(p, double p_weight, q, double q_weight):
     return c_jsd((<Distribution?>p).thisptr, p_weight,
@@ -57,6 +41,6 @@ cpdef indexD(p, double p_weight, q, double q_weight):
     return c_indexD((<Distribution?>p).thisptr, p_weight,
                     (<Distribution?>q).thisptr, q_weight)
 
-cpdef kld(p,q):
+cpdef kld(p, q):
     # http://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence
     return c_kld((<Distribution?>p).thisptr, (<Distribution?>q).thisptr)
