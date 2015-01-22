@@ -1,18 +1,18 @@
 Information Flow Analysis
 =========================
 
-IFA is a simple library for information flow analysis.
-It's in Pre-alpha stage.
+IFA is a simple and fast library for information theory research and information flow analysis. It's a Python module written C++/Cython.
+
 
 Installation
 ============
+Dependencies:
+* numpy
+
+If you have Cython some cpp files will get regenerated during installation
 ````bash
 pip install ifa
 ````
-Dependencies:
-* cython (only for the installation)
-* numpy
-
 Or if you want the developmen version:
 ````bash
 git clone https://github.com/janekolszak/ifa.git;
