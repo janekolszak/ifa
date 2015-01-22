@@ -57,11 +57,5 @@ target/
 build/
 ifa/build/
 
-# Cython
-ifa/utils.cpp
-ifa/divergence.cpp
-ifa/distribution.cpp
-ifa/connections.cpp
-
 # PYPI
 MANIFEST

@@ -4,8 +4,18 @@ import sys
 
 from distutils.core import setup
 from distutils.extension import Extension
-from Cython.Distutils import build_ext
-from Cython.Build import cythonize
+
+try:
+    from Cython.Distutils import build_ext
+except ImportError:
+    # No Cython
+    source_extension = ".cpp"
+    cmdclass = {}
+else:
+    # There's Cython
+    source_extension = ".pyx"
+    cmdclass = {'build_ext': build_ext}
+
 
 flags = ["-O3",
          "-std=c++11",
@@ -22,14 +32,14 @@ flags = ["-O3",
 
 # TODO: Delete before release
 # flags = ["-O0", "-std=c++11"]
-ext_modules = [Extension("parcel", ["parcel.pyx"], extra_compile_args=["-O3", "-march=native", "-ffast-math", "-funroll-loops"],
-                         )]
+
 version = '0.0.3'
+
 setup(
     name='ifa',
     packages=['ifa'],
     version=version,
-    cmdclass={'build_ext': build_ext},
+    cmdclass=cmdclass,
     license="MIT License",
     author="Jan Olszak",
     author_email="janekolszak@gmail.com",
@@ -37,45 +47,42 @@ setup(
     keywords="information flow analysis entropy distribution",
     url="http://github.com/janekolszak/ifa",
     download_url="https://github.com/janekolszak/ifa/archive/ifa-" + version + ".tar.gz",
-    ext_modules=cythonize([Extension("ifa.utils",
-                                     sources=[
-                                         'ifa/utils.pyx',
-                                         'ifa/utils_impl.cpp'
-                                     ],
-                                     language="c++",
-                                     extra_compile_args=flags,
-                                     define_macros=[("NPY_NO_DEPRECATED_API", None)]),
-
-                           Extension("ifa.distribution",
-                                     sources=[
-                                         'ifa/distribution.pyx',
-                                         'ifa/distribution_impl.cpp'
-                                     ],
-                                     language="c++",
-                                     extra_compile_args=flags),
-
-                           Extension("ifa.divergence",
-                                     sources=[
-                                         'ifa/divergence.pyx',
-                                         'ifa/divergence_impl.cpp',
-                                         'ifa/distribution_impl.cpp'
-                                     ],
-                                     language="c++",
-                                     extra_compile_args=flags),
-
-                           Extension("ifa.connections",
-                                     sources=[
-                                         'ifa/connections.pyx',
-                                         'ifa/divergence_impl.cpp',
-                                         'ifa/utils_impl.cpp',
-                                         'ifa/distribution_impl.cpp'
-                                     ],
-                                     language="c++",
-                                     extra_compile_args=flags + ["-fopenmp"],
-                                     extra_link_args=['-fopenmp']),
+    ext_modules=[Extension("ifa.utils",
+                           sources=[
+                               'ifa/utils' + source_extension,
+                               'ifa/utils_impl.cpp'
                            ],
-                          compiler_directives={'language_level': 2}
-                          ),
+                           language="c++",
+                           extra_compile_args=flags),
+
+                 Extension("ifa.distribution",
+                           sources=[
+                               'ifa/distribution' + source_extension,
+                               'ifa/distribution_impl.cpp'
+                           ],
+                           language="c++",
+                           extra_compile_args=flags),
+
+                 Extension("ifa.divergence",
+                           sources=[
+                               'ifa/divergence' + source_extension,
+                               'ifa/divergence_impl.cpp',
+                               'ifa/distribution_impl.cpp'
+                           ],
+                           language="c++",
+                           extra_compile_args=flags),
+
+                 Extension("ifa.connections",
+                           sources=[
+                               'ifa/connections' + source_extension,
+                               'ifa/divergence_impl.cpp',
+                               'ifa/utils_impl.cpp',
+                               'ifa/distribution_impl.cpp'
+                           ],
+                           language="c++",
+                           extra_compile_args=flags + ["-fopenmp"],
+                           extra_link_args=['-fopenmp']),
+                 ],
     classifiers=[
         "Programming Language :: Cython",
         "Programming Language :: C++",

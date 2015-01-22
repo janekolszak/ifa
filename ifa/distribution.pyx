@@ -71,7 +71,6 @@ cdef class Distribution:
             raise KeyError("No such key")
 
     def __setitem__(self, key, value):
-        print(type(key))
         if type(key) is not str:
             raise TypeError("Keys should be str")
 
