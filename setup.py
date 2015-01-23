@@ -33,7 +33,7 @@ flags = ["-O3",
 # TODO: Delete before release
 # flags = ["-O0", "-std=c++11"]
 
-version = '0.0.3'
+version = '0.1.0'
 
 setup(
     name='ifa',
