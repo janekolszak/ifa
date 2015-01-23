@@ -10,22 +10,21 @@ Dependencies:
 * numpy
 
 If you have Cython some cpp files will get regenerated during installation
-.. code-block:: bash
-
+```bash
     pip install ifa
 
-Or if you want the developmen version:
-.. code-block:: bash
+```
 
+Or if you want the developmen version:
+```bash
     git clone https://github.com/janekolszak/ifa.git;
     cd ifa;
     sudo make install;
-
+```
 Usage
 =====
 Computing Jensen–Shannon divergence:
-.. code-block:: python
-
+```python
     from ifa.distribution import Distribution
     from ifa.divergence import jsd
 
@@ -35,7 +34,7 @@ Computing Jensen–Shannon divergence:
     q = Distribution(["A", "C"], [0.5, 0.5])
 
     assert_allclose(jsd(p, 0.5, q, 0.5), [0.5])
-
+```
 What's inside:
 ==============
 * Distribution class with some basic operations
