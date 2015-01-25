@@ -40,13 +40,13 @@ cdef class Distribution:
         if (keys is not None) and (values is not None):
             for k, v in zip(keys, values):
                 self.thisptr.insert(k, v)
+
         elif dictionary is not None:
             for k, v in dictionary.iteritems():
                 self.thisptr.insert(k, v)
 
         if normalize:
             self.thisptr.normalize()
-
 
     def __dealloc__(self):
         del self.thisptr
@@ -88,6 +88,9 @@ cdef class Distribution:
     def __contains__(self, key):
         return self.thisptr.contains(key)
 
+    def __add__(self, Distribution p):
+        return add(self, p)
+
     def __len__(self):
         return self.thisptr.size()
 
@@ -120,6 +123,13 @@ cdef class Distribution:
 
     def contains(self, key):
         return self.thisptr.contains(key)
+
+
+cpdef add(Distribution p, Distribution q):
+    r = Distribution()
+    c_declarations.add(p.thisptr, q.thisptr, r.thisptr)
+    r.normalize()
+    return r
 
 cpdef common(Distribution p, Distribution q):
     r = Distribution()

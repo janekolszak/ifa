@@ -91,6 +91,13 @@ void Distribution::set(const std::string &key, const double value)
     dist[key] = value;
 }
 
+void Distribution::append(const Distribution *p)
+{
+    for (const auto &entry : p->dist) {
+        dist[entry.first] += entry.second;
+    }
+}
+
 void Distribution::erase(const std::string &key)
 {
     dist.erase(key);
@@ -124,6 +131,12 @@ double Distribution::entropy() const
     }
 
     return -1 * entropy;
+}
+
+void add(const Distribution *p, const Distribution *q, Distribution *result)
+{
+    result->append(p);
+    result->append(q);
 }
 
 void common(const Distribution *p, const Distribution *q, Distribution *result)

@@ -43,6 +43,7 @@ public:
     bool contains(const std::string &event) const;
     double get(const std::string &event) const;
     void set(const std::string &event, const double value);
+    void append(const Distribution *p);
     void erase(const std::string &event);
     void insert(const std::string &event, const double value);
     double normalize();
@@ -58,7 +59,7 @@ private:
     Map::iterator m_it;
 };
 
-
+void add(const Distribution *p, const Distribution *q, Distribution *result);
 void common(const Distribution *p, const Distribution *q, Distribution *result);
 int direction(const Distribution *p, const Distribution *q);
 

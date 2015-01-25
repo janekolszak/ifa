@@ -36,6 +36,7 @@ cdef extern from "distribution_impl.hpp" namespace "ifa":
         bool contains(string)
         double get(string) except +
         void set(string, double) except +
+        void append(Distribution) except +
         void erase(string)
         void insert(string, double)
         void startIteration()
@@ -44,6 +45,7 @@ cdef extern from "distribution_impl.hpp" namespace "ifa":
         double normalize()
         double getNormalizingConstant()
 
+    void add(Distribution *p, Distribution *q, Distribution *result) nogil
     void common(Distribution *p, Distribution *q, Distribution *result) nogil
     int direction(Distribution *p, Distribution *q) nogil
 
