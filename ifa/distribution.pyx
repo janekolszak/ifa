@@ -91,6 +91,12 @@ cdef class Distribution:
     def __add__(self, Distribution p):
         return add(self, p)
 
+    def __iadd__(self, Distribution p):
+        for key, value in p:
+            self.thisptr.append(key, value)
+
+        return self
+
     def __len__(self):
         return self.thisptr.size()
 
@@ -124,6 +130,8 @@ cdef class Distribution:
     def contains(self, key):
         return self.thisptr.contains(key)
 
+    def append(self, key, value):
+        self.thisptr.append(key, value)
 
 cpdef add(Distribution p, Distribution q):
     r = Distribution()

@@ -44,6 +44,7 @@ public:
     double get(const std::string &event) const;
     void set(const std::string &event, const double value);
     void append(const Distribution *p);
+    void append(const std::string &key, const double value);
     void erase(const std::string &event);
     void insert(const std::string &event, const double value);
     double normalize();

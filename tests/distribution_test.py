@@ -111,6 +111,17 @@ class TestDistribution(unittest.TestCase):
         self.assertEqual(r["C"], 0.25)
         self.assertEqual(r["D"], 0.25)
 
+    def test_append(self):
+        p = Distribution(["A", "B", "C"], [0.2, 0.25, 0.55])
+        p.append("A", 0.3)
+        self.assertEqual(p["A"], 0.5)
+
+    def test_iadd(self):
+        p = Distribution(["A", "B", "C"], [0.2, 0.25, 0.55])
+        q = Distribution(["A"], [0.2])
+        p += q
+        self.assertEqual(p["A"], 0.4)
+
     def test_insert(self):
         d = Distribution()
         self.assertEqual(d.size(), 0)

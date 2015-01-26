@@ -37,6 +37,7 @@ cdef extern from "distribution_impl.hpp" namespace "ifa":
         double get(string) except +
         void set(string, double) except +
         void append(Distribution) except +
+        void append(string, double) except +
         void erase(string)
         void insert(string, double)
         void startIteration()

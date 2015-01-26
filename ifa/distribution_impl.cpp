@@ -98,6 +98,11 @@ void Distribution::append(const Distribution *p)
     }
 }
 
+void Distribution::append(const std::string &key, const double value)
+{
+    dist[key] += value;
+}
+
 void Distribution::erase(const std::string &key)
 {
     dist.erase(key);
