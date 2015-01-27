@@ -91,6 +91,16 @@ void Distribution::set(const std::string &key, const double value)
     dist[key] = value;
 }
 
+void Distribution::remove(const Distribution *p)
+{
+    for (const auto &entry : p->dist) {
+        auto it = dist.find(entry.first);
+        if (it != dist.end()) {
+            it->second -= entry.second;
+        }
+    }
+}
+
 void Distribution::append(const Distribution *p)
 {
     for (const auto &entry : p->dist) {
@@ -142,6 +152,12 @@ void add(const Distribution *p, const Distribution *q, Distribution *result)
 {
     result->append(p);
     result->append(q);
+}
+
+void subtract(const Distribution *p, const Distribution *q, Distribution *result)
+{
+    result->append(p);
+    result->remove(q);
 }
 
 void common(const Distribution *p, const Distribution *q, Distribution *result)

@@ -32,6 +32,8 @@ from c_declarations cimport Distribution as CDistribution
 
 from libcpp.string cimport string
 
+# TODO: - Verify method
+#       - remove elements with values <=0 and use it in subtract
 
 cdef class Distribution:
     def __cinit__(self, keys = None, values = None, dictionary = None, normalize = False):
@@ -91,6 +93,9 @@ cdef class Distribution:
     def __add__(self, Distribution p):
         return add(self, p)
 
+    def __sub__(self, Distribution p):
+        return subtract(self, p)
+
     def __iadd__(self, Distribution p):
         for key, value in p:
             self.thisptr.append(key, value)
@@ -136,6 +141,12 @@ cdef class Distribution:
 cpdef add(Distribution p, Distribution q):
     r = Distribution()
     c_declarations.add(p.thisptr, q.thisptr, r.thisptr)
+    r.normalize()
+    return r
+
+cpdef subtract(Distribution p, Distribution q):
+    r = Distribution()
+    c_declarations.subtract(p.thisptr, q.thisptr, r.thisptr)
     r.normalize()
     return r
 

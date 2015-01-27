@@ -43,6 +43,7 @@ public:
     bool contains(const std::string &event) const;
     double get(const std::string &event) const;
     void set(const std::string &event, const double value);
+    void remove(const Distribution *p);
     void append(const Distribution *p);
     void append(const std::string &key, const double value);
     void erase(const std::string &event);
@@ -61,6 +62,7 @@ private:
 };
 
 void add(const Distribution *p, const Distribution *q, Distribution *result);
+void subtract(const Distribution *p, const Distribution *q, Distribution *result);
 void common(const Distribution *p, const Distribution *q, Distribution *result);
 int direction(const Distribution *p, const Distribution *q);
 
