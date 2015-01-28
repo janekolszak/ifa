@@ -101,6 +101,14 @@ void Distribution::remove(const Distribution *p)
     }
 }
 
+void Distribution::remove(const std::string &key, const double value)
+{
+    auto it = dist.find(key);
+    if (it != dist.end()) {
+        it->second -= value;
+    }
+}
+
 void Distribution::append(const Distribution *p)
 {
     for (const auto &entry : p->dist) {

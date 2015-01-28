@@ -132,6 +132,15 @@ class TestDistribution(unittest.TestCase):
         p += q
         self.assertEqual(p["A"], 0.4)
 
+    def test_isub(self):
+        # TODO: Include bigger q in this test
+        p = Distribution(["A", "B", "C"], [0.4, 0.3, 0.3])
+        q = Distribution(["A", "C", "D"], [0.4, 0.2, 0.25])
+        p -= q
+        self.assertEqual(p["A"], 0.0)
+        assert_allclose(p["B"], [0.3])
+        assert_allclose(p["C"], [0.1])
+
     def test_insert(self):
         d = Distribution()
         self.assertEqual(d.size(), 0)

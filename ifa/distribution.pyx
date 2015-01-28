@@ -102,6 +102,12 @@ cdef class Distribution:
 
         return self
 
+    def __isub__(self, Distribution p):
+        for key, value in p:
+            self.thisptr.remove(key, value)
+
+        return self
+
     def __len__(self):
         return self.thisptr.size()
 
