@@ -83,7 +83,13 @@ bool Distribution::contains(const std::string &key) const
 
 double Distribution::get(const std::string &key) const
 {
-    return dist.at(key);
+    try {
+        return dist.at(key);
+
+    } catch (const std::out_of_range &e)
+    {
+        return 0.0;
+    }
 }
 
 void Distribution::set(const std::string &key, const double value)
@@ -97,6 +103,9 @@ void Distribution::remove(const Distribution *p)
         auto it = dist.find(entry.first);
         if (it != dist.end()) {
             it->second -= entry.second;
+            if (it->second <= 0) {
+                dist.erase(it);
+            }
         }
     }
 }
@@ -106,6 +115,9 @@ void Distribution::remove(const std::string &key, const double value)
     auto it = dist.find(key);
     if (it != dist.end()) {
         it->second -= value;
+        if (it->second <= 0) {
+            dist.erase(it);
+        }
     }
 }
 

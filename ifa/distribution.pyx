@@ -32,8 +32,7 @@ from c_declarations cimport Distribution as CDistribution
 
 from libcpp.string cimport string
 
-# TODO: - Verify method
-#       - remove elements with values <=0 and use it in subtract
+# TODO: - Verify method - deletes non-positive elements
 
 cdef class Distribution:
     def __cinit__(self, keys = None, values = None, dictionary = None, normalize = False):
