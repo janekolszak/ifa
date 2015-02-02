@@ -32,7 +32,6 @@ from c_declarations cimport Distribution as CDistribution
 
 from libcpp.string cimport string
 
-# TODO: - Verify method - deletes non-positive elements
 
 cdef class Distribution:
     def __cinit__(self, keys = None, values = None, dictionary = None, normalize = False):
@@ -142,6 +141,11 @@ cdef class Distribution:
 
     def append(self, key, value):
         self.thisptr.append(key, value)
+
+    def prepare(self):
+        self.thisptr.prepare()
+
+
 
 cpdef add(Distribution p, Distribution q):
     r = Distribution()

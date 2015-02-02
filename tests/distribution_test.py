@@ -59,8 +59,6 @@ class TestDistribution(unittest.TestCase):
 
     def test_getsetdel(self):
         d = Distribution()
-        # with self.assertRaises(KeyError):
-        #     d["A"]
 
         d["A"] = 0.2
         self.assertEqual(d["A"], 0.2)
@@ -84,6 +82,15 @@ class TestDistribution(unittest.TestCase):
         self.assertEqual(d.normalize(), 6)
         self.assertEqual(d.getNormalizingConstant(), 6)
         self.assertEqual(d["A"], 0.5)
+
+    def test_prepare(self):
+        d = Distribution(["A", "B", "C", "D"], [3, 3, -1, 0])
+        d.prepare()
+        self.assertEqual(d.getNormalizingConstant(), 6)
+        self.assertEqual(d["A"], 0.5)
+        self.assertEqual(d["B"], 0.5)
+        self.assertEqual(d["C"], 0.0)
+        self.assertEqual(d["D"], 0.0)
 
     def test_constructor(self):
         d = Distribution(["A", "B"], [0.3, 0.7])

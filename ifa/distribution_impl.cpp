@@ -61,6 +61,19 @@ double Distribution::normalize()
     return normalizingConstant;
 }
 
+void Distribution::prepare()
+{
+    auto it = dist.begin();
+    while (it != dist.end()) {
+        if (it->second <= 0) {
+            it = dist.erase(it);
+        } else {
+            ++it;
+        }
+    }
+    normalize();
+}
+
 double Distribution::getNormalizingConstant()
 {
     return normalizingConstant;

@@ -54,6 +54,7 @@ public:
     void startIteration();
     std::pair<std::string, double> next();
     double entropy() const;
+    void prepare();
 
     Map dist;
     double normalizingConstant;

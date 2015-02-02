@@ -47,6 +47,7 @@ cdef extern from "distribution_impl.hpp" namespace "ifa":
         double entropy()
         double normalize()
         double getNormalizingConstant()
+        void prepare()
 
     void add(Distribution *p, Distribution *q, Distribution *result) nogil
     void subtract(Distribution *p, Distribution *q, Distribution *result) nogil
