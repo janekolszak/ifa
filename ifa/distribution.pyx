@@ -34,6 +34,21 @@ from libcpp.string cimport string
 
 
 cdef class Distribution:
+    """This class encapsulates a distribution.
+
+    Parameters
+    ----------
+    keys : list (optional, default: None)
+        List of names
+    values : list(optional, default: None)
+        List of probabilities or counts for names
+
+    dictionary : dict(optional, default: None)
+        Dictionary of key,value pairs. Alternate way of constructing
+
+    normalize : bool(optional, default: False)
+        Normalize the distribution
+    """
     def __cinit__(self, keys = None, values = None, dictionary = None, normalize = False):
         self.thisptr = new CDistribution()
 
@@ -113,36 +128,83 @@ cdef class Distribution:
         return "{" + ", ".join(['"'+ str(e) + '"' + ": " + str(p) for e, p in self]) + "}"
 
     def size(self):
+        """
+        Returns
+        -------
+            The number of elements in the distribution
+        """
         return self.thisptr.size()
 
     def isEmpty(self):
+        """
+        Returns
+        -------
+            Is the distribution empty?
+        """
         return self.thisptr.isEmpty()
 
     def insert(self, key, value):
+        """
+        Inserts a key-value pair into the distribution
+
+        Parameters
+        ----------
+        key : string
+            Key name
+        value : double
+            Probability or the count
+        """
         self.thisptr.insert(key, value)
 
     def normalize(self):
+        """
+        Normalize the distribution.
+        Sum of values will be 1.0
+        """
         if self.thisptr.isEmpty():
             return None
 
         return self.thisptr.normalize()
 
     def getNormalizingConstant(self):
+        """
+        Returns
+        -------
+            The normalization constant. This way one can get counts from probabilities.
+        """
         if self.thisptr.isEmpty():
             return None
 
         return self.thisptr.getNormalizingConstant()
 
     def entropy(self):
+        """
+        Returns
+        -------
+            The normalization constant. This way one can get counts from probabilities.
+        """
         return self.thisptr.entropy()
 
     def contains(self, key):
+        """
+        Returns
+        -------
+            Does the distribution contain the key? (it has non-zero value)
+        """
         return self.thisptr.contains(key)
 
     def append(self, key, value):
+        """
+        Adds the value to the value stored for key
+        """
+
         self.thisptr.append(key, value)
 
     def prepare(self):
+        """
+        Removes elements with non-positive values (probability/count)
+        Normalizes the distribution.
+        """
         self.thisptr.prepare()
 
 
