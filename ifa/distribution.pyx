@@ -2,7 +2,7 @@
 
 # The MIT License (MIT)
 #
-# Copyright (c) 2014 Jan Olszak (j.olszak@gmail.com)
+# Copyright (c) 2015 Jan Olszak (j.olszak@gmail.com)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +34,8 @@ from libcpp.string cimport string
 
 
 cdef class Distribution:
-    """This class encapsulates a distribution.
+    r"""
+    This class encapsulates a distribution.
 
     Parameters
     ----------
@@ -128,7 +129,7 @@ cdef class Distribution:
         return "{" + ", ".join(['"'+ str(e) + '"' + ": " + str(p) for e, p in self]) + "}"
 
     def size(self):
-        """
+        r"""
         Returns
         -------
             The number of elements in the distribution
@@ -136,7 +137,7 @@ cdef class Distribution:
         return self.thisptr.size()
 
     def isEmpty(self):
-        """
+        r"""
         Returns
         -------
             Is the distribution empty?
@@ -144,7 +145,7 @@ cdef class Distribution:
         return self.thisptr.isEmpty()
 
     def insert(self, key, value):
-        """
+        r"""
         Inserts a key-value pair into the distribution
 
         Parameters
@@ -157,7 +158,7 @@ cdef class Distribution:
         self.thisptr.insert(key, value)
 
     def normalize(self):
-        """
+        r"""
         Normalize the distribution.
         Sum of values will be 1.0
         """
@@ -167,7 +168,7 @@ cdef class Distribution:
         return self.thisptr.normalize()
 
     def getNormalizingConstant(self):
-        """
+        r"""
         Returns
         -------
             The normalization constant. This way one can get counts from probabilities.
@@ -178,7 +179,7 @@ cdef class Distribution:
         return self.thisptr.getNormalizingConstant()
 
     def entropy(self):
-        """
+        r"""
         Returns
         -------
             The normalization constant. This way one can get counts from probabilities.
@@ -186,7 +187,7 @@ cdef class Distribution:
         return self.thisptr.entropy()
 
     def contains(self, key):
-        """
+        r"""
         Returns
         -------
             Does the distribution contain the key? (it has non-zero value)
@@ -194,14 +195,14 @@ cdef class Distribution:
         return self.thisptr.contains(key)
 
     def append(self, key, value):
-        """
+        r"""
         Adds the value to the value stored for key
         """
 
         self.thisptr.append(key, value)
 
     def prepare(self):
-        """
+        r"""
         Removes elements with non-positive values (probability/count)
         Normalizes the distribution.
         """
