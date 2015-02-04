@@ -198,7 +198,6 @@ cdef class Distribution:
         r"""
         Adds the value to the value stored for key
         """
-
         self.thisptr.append(key, value)
 
     def prepare(self):
@@ -208,6 +207,22 @@ cdef class Distribution:
         """
         self.thisptr.prepare()
 
+    def getData(self):
+        r"""
+        Returns
+        -------
+        A tuple (keys, values)
+        """
+        #cdef np.ndarray[double, ndim=1, mode='c'] values
+        #values = np.empty((self.thisptr.size(),), dtype = ctypes.c_double)
+
+        keys = []
+        values = []
+        for k,v in self:
+            keys.append(k)
+            values.append(v)
+
+        return keys, values
 
 
 cpdef __add(Distribution p, Distribution q):
@@ -229,3 +244,6 @@ cpdef common(Distribution p, Distribution q):
 
 cpdef direction(Distribution p, Distribution q):
     return c_declarations.direction(p.thisptr, q.thisptr)
+
+cpdef plot(distributions):
+    raise NotImplementedError("Plotting is not implemented yet!")

@@ -155,6 +155,12 @@ class TestDistribution(unittest.TestCase):
         d.insert("B", 0.5)
         self.assertEqual(d.size(), 2)
 
+    def test_getData(self):
+        d = Distribution(["A", "B", "C"], [0.4, 0.3, 0.2])
+        keys, values = d.getData()
+        self.assertEqual(keys, ["A", "B", "C"])
+        self.assertEqual(values, [0.4, 0.3, 0.2])
+
     def test_entropy(self):
         d = Distribution(["A", "B"], [0.5, 0.5])
         assert_allclose(d.entropy(), [1])
