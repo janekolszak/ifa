@@ -105,10 +105,10 @@ cdef class Distribution:
         return self.thisptr.contains(key)
 
     def __add__(self, Distribution p):
-        return add(self, p)
+        return __add(self, p)
 
     def __sub__(self, Distribution p):
-        return subtract(self, p)
+        return __subtract(self, p)
 
     def __iadd__(self, Distribution p):
         for key, value in p:
@@ -210,13 +210,13 @@ cdef class Distribution:
 
 
 
-cpdef add(Distribution p, Distribution q):
+cpdef __add(Distribution p, Distribution q):
     r = Distribution()
     c_declarations.add(p.thisptr, q.thisptr, r.thisptr)
     r.normalize()
     return r
 
-cpdef subtract(Distribution p, Distribution q):
+cpdef __subtract(Distribution p, Distribution q):
     r = Distribution()
     c_declarations.subtract(p.thisptr, q.thisptr, r.thisptr)
     r.normalize()
