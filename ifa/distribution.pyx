@@ -224,6 +224,20 @@ cdef class Distribution:
 
         return keys, values
 
+    def plot(self, filename = None, show = True, color = "blue"):
+        import matplotlib.pyplot as plt
+
+        keys, values = self.getData()
+        x = np.arange(len(values))
+        plt.bar(x, values, alpha = 0.5, color = color)
+        plt.xticks(x + 0.5, keys, rotation=90)
+
+        if filename is not None:
+            plt.savefig(filename)
+
+        if show:
+            plt.show()
+
 
 cpdef __add(Distribution p, Distribution q):
     r = Distribution()
@@ -245,5 +259,15 @@ cpdef common(Distribution p, Distribution q):
 cpdef direction(Distribution p, Distribution q):
     return c_declarations.direction(p.thisptr, q.thisptr)
 
-cpdef plot(distributions):
-    raise NotImplementedError("Plotting is not implemented yet!")
+cpdef plot(distributions, filename = None, cmapName = "gist_rainbow"):
+    import matplotlib.pyplot as plt
+
+    cmap=plt.get_cmap(cmapName)
+
+    for i, d in enumerate(distributions):
+        d.plot(show = False, color = cmap(float(i)/len(distributions)))
+
+    if filename is not None:
+        plt.savefig(filename)
+    else:
+        plt.show()
