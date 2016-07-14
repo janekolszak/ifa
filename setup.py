@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 import os
 import sys
+import numpy
 
 from distutils.core import setup
 from distutils.extension import Extension
@@ -83,6 +84,7 @@ setup(
                            extra_compile_args=flags + ["-fopenmp"],
                            extra_link_args=['-fopenmp']),
                  ],
+    include_dirs = [numpy.get_include()],
     classifiers=[
         "Programming Language :: Cython",
         "Programming Language :: C++",
